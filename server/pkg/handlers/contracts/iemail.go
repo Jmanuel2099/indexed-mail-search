@@ -17,7 +17,8 @@ type IndexedSearchRequest struct {
 	From       int                       `json:"from"`
 	MaxResults int                       `json:"max_results"`
 	Query      IndexedSearchRequestQuery `json:"query"`
-	Source     map[string]interface{}    `json:"_source"`
+	Source     []string                  `json:"_source"`
+	// Source     map[string]interface{}    `json:"_source"`
 }
 
 type IndexedSearchRequestQuery struct {
@@ -31,21 +32,24 @@ type CreateEmailsResponse struct {
 	RecordCount int    `json:"record_count"`
 }
 
+
 type IndexedSearchResponse struct {
-	Hits struct {
-		Hits []struct {
-			ID        string                 `json:"_id"`
-			Timestamp string                 `json:"@timestamp"`
-			Score     float64                `json:"_score"`
-			Source    map[string]interface{} `json:"_source"`
-		} `json:"hits"`
+	Took     float64 `json:"took"`
+	TimedOut bool    `json:"timed_out"`
+	MaxScore float64 `json:"max_score"`
+	Hits     struct {
 		Total struct {
 			Value int `json:"value"`
 		} `json:"total"`
-		MaxScore float64 `json:"max_score"`
+		Hits []struct {
+			Index     string                 `json:"_index"`
+			Type      string                 `json:"_type"`
+			ID        string                 `json:"_id"`
+			Score     float64                `json:"_score"`
+			Timestamp string                 `json:"@timestamp"`
+			Source    map[string]interface{} `json:"_source"`
+		} `json:"hits"`
 	} `json:"hits"`
-	TimedOut bool    `json:"timed_out"`
-	Took     float64 `json:"took"`
 }
 
 type ErrorReponse struct {

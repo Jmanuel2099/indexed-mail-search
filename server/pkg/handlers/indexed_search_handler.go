@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"fmt"
 	"indexed-mail-search/server/pkg/domain"
 	"indexed-mail-search/server/pkg/handlers/contracts"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )
 
@@ -23,16 +25,17 @@ type SearchTermInEmailsResponse struct {
 }
 
 func (ish *IndexedSearchHAandler) SearchTermInEmails(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	term := query.Get("q")
+	term := chi.URLParam(r, "term")
 
 	emails, err := ish.indexedSearchService.SearchInIndexedEmails(term)
 	if err != nil {
 		// NewErrResponse(w, r, http.StatusInternalServerError, err)
+		fmt.Print("err: " + err.Error())
 		return
 	}
 	response := &SearchTermInEmailsResponse{
 		Emails: emails,
 	}
+	fmt.Print(response.Emails)
 	render.JSON(w, r, response)
 }

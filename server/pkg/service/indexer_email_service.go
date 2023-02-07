@@ -10,7 +10,8 @@ import (
 	"strings"
 )
 
-const emailFolderPath = "../enron_mail_20110402/maildir/"
+// const emailFolderPath = "../enron_mail_20110402/maildir/"
+const emailFolderPath = "../index_test/maildir/"
 
 type IndexerEmailService struct {
 	datasource contracts.IEmail

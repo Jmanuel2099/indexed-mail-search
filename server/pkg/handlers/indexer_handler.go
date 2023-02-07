@@ -39,7 +39,6 @@ func (ih *IndexerHandler) IndexEmails(w http.ResponseWriter, r *http.Request) {
 
 func (ih *IndexerHandler) indexEmailByUser(userEmail string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	fmt.Print("estoy preparando la indexacion de: " + userEmail)
 	emails, err := ih.indexerEmailService.ProcessMailsByUser(userEmail)
 	if err != nil {
 		return

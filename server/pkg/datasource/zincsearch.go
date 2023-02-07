@@ -3,6 +3,7 @@ package datasource
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"indexed-mail-search/server/pkg/handlers/contracts"
 	"io"
 	"net/http"
@@ -45,13 +46,13 @@ func setBasicAuthentication(newSling *sling.Sling) {
 func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contracts.CreateEmailsResponse, error) {
 	succesResponse := &contracts.CreateEmailsResponse{}
 	errorResponse := &contracts.ErrorReponse{}
-	path := "/api/_bulkv2"
+	url := "/api/_bulkv2"
 	bodyRequest := contracts.CreateEmailsRequest{
 		Index:   indexName,
 		Records: emails,
 	}
 
-	request, err := makeRequest(zc.sling, http.MethodPost, path, bodyRequest)
+	request, err := makeRequest(zc.sling, http.MethodPost, url, bodyRequest)
 	if err != nil {
 		return nil, err
 	}
@@ -71,22 +72,23 @@ func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contracts.CreateE
 func (zc *ZincsearchClient) IndexedSearch(bodyrequest contracts.IndexedSearchRequest) (*contracts.IndexedSearchResponse, error) {
 	succesResponse := &contracts.IndexedSearchResponse{}
 	errorResponse := &contracts.ErrorReponse{}
-	path := "api/" + indexName + "_search"
+	url := "/api/" + indexName + "/_search"
 
-	request, err := makeRequest(zc.sling, http.MethodPost, path, bodyrequest)
+	request, err := makeRequest(zc.sling, http.MethodPost, url, bodyrequest)
 	if err != nil {
+		// fmt.Println("Make request error: " + err.Error())
 		return nil, err
 	}
-
 	response, err := zc.sling.Do(request, succesResponse, errorResponse)
 	if err != nil {
+		fmt.Println("Do error: " + err.Error())
 		return nil, err
 	}
 
 	if response.StatusCode != http.StatusOK {
 		return nil, err
 	}
-
+	fmt.Println(succesResponse.Hits.Total.Value)
 	return succesResponse, nil
 }
 
