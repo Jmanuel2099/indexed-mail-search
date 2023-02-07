@@ -2,10 +2,8 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"indexed-mail-search/server/pkg/domain"
 	"indexed-mail-search/server/pkg/handlers/contracts"
-	"strconv"
 	"time"
 )
 
@@ -43,7 +41,7 @@ func (iss *IndexedSearchService) SearchInIndexedEmails(term string) ([]domain.Em
 	}
 	response, err := iss.datasource.IndexedSearch(body)
 	if err != nil {
-		
+
 		return nil, err
 	}
 
@@ -59,10 +57,8 @@ func mapResponseToEmails(response *contracts.IndexedSearchResponse) []domain.Ema
 
 		err := json.Unmarshal(contetEmialBytes, &email)
 		if err != nil {
-			//fmt.Println("Error in mapZincSearchResponseToEmails: ", err)
 			continue
 		}
-		
 		emails = append(emails, email)
 	}
 

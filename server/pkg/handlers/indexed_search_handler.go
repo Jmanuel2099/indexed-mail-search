@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"fmt"
+	customerror "indexed-mail-search/server/pkg/custom_error"
 	"indexed-mail-search/server/pkg/domain"
 	"indexed-mail-search/server/pkg/handlers/contracts"
 	"net/http"
@@ -26,16 +26,19 @@ type SearchTermInEmailsResponse struct {
 
 func (ish *IndexedSearchHAandler) SearchTermInEmails(w http.ResponseWriter, r *http.Request) {
 	term := chi.URLParam(r, "term")
+	if len(term) > 150 || len(term) < 1 {
+		errMessage := "term invalid. Length must be between 1 and 150"
+		customerror.NewCustomError(http.StatusBadRequest, errMessage).ErrorResponseHandling(w, r)
+		return
+	}
 
 	emails, err := ish.indexedSearchService.SearchInIndexedEmails(term)
 	if err != nil {
-		// NewErrResponse(w, r, http.StatusInternalServerError, err)
-		fmt.Print("err: " + err.Error())
+		customerror.NewCustomError(http.StatusInternalServerError, err.Error()).ErrorResponseHandling(w, r)
 		return
 	}
 	response := &SearchTermInEmailsResponse{
 		Emails: emails,
 	}
-	fmt.Print(response.Emails)
 	render.JSON(w, r, response)
 }

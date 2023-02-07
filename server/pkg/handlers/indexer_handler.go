@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	customerror "indexed-mail-search/server/pkg/custom_error"
 	"indexed-mail-search/server/pkg/handlers/contracts"
 	"net/http"
 	"sync"
@@ -23,7 +24,7 @@ func (ih *IndexerHandler) IndexEmails(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Hola estoy en el handler")
 	emailUsers, err := ih.indexerEmailService.GetMailUsers()
 	if err != nil {
-		//NewErrResponse(w, r, http.StatusInternalServerError, err)
+		customerror.NewCustomError(http.StatusInternalServerError, err.Error()).ErrorResponseHandling(w, r)
 		return
 	}
 
