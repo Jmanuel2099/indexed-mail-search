@@ -12,8 +12,6 @@ import (
 
 const emailFolderPath = "../enron_mail_20110402/maildir/"
 
-//const emailFolderPath = "C:Users/jmanu/Documents/TestTruora/Test/indexed-mail-search/server/enron_mail_20110402/maildir"
-
 type IndexerEmailService struct {
 	datasource contracts.IEmail
 }
