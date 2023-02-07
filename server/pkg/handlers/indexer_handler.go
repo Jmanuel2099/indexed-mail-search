@@ -24,7 +24,6 @@ func (ih *IndexerHandler) IndexEmails(w http.ResponseWriter, r *http.Request) {
 	emailUsers, err := ih.indexerEmailService.GetMailUsers()
 	if err != nil {
 		//NewErrResponse(w, r, http.StatusInternalServerError, err)
-		fmt.Println("Hola estoy en el primer erro de handler " + err.Error())
 		return
 	}
 

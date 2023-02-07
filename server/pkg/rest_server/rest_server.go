@@ -14,9 +14,10 @@ const (
 )
 
 type RestServer struct {
-	Router         *chi.Mux
-	httpClient     *http.Client
-	indexerHandler *handlers.IndexerHandler
+	Router               *chi.Mux
+	httpClient           *http.Client
+	indexerHandler       *handlers.IndexerHandler
+	indexedSearchHandler *handlers.IndexedSearchHAandler
 }
 
 func NewRestServer() *RestServer {
@@ -38,6 +39,10 @@ func (rs *RestServer) configureHandlers() {
 	indexEmailService := service.NewIndexerService(datasourceZincSearch)
 	indexerHandler := handlers.NewIndexerHandler(indexEmailService)
 	rs.indexerHandler = indexerHandler
+
+	indexedSearchService := service.NewIndexedSearchService(datasourceZincSearch)
+	indexedSearchHandler := handlers.NewIndexedSearchHAandler(indexedSearchService)
+	rs.indexedSearchHandler = indexedSearchHandler
 }
 
 func (rs *RestServer) RunServer() {

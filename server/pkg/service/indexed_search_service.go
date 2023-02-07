@@ -16,8 +16,8 @@ type IndexedSearchService struct {
 	datasource contracts.IEmail
 }
 
-func NewIndexedSearchService(ds contracts.IEmail) *IndexerEmailService {
-	return &IndexerEmailService{
+func NewIndexedSearchService(ds contracts.IEmail) *IndexedSearchService {
+	return &IndexedSearchService{
 		datasource: ds,
 	}
 }

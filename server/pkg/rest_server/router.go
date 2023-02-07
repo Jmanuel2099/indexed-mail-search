@@ -24,4 +24,5 @@ func (rs *RestServer) configureRoutes() {
 	})
 
 	rs.Router.Post("/indexer", rs.indexerHandler.IndexEmails)
+	rs.Router.Get("/search", rs.indexedSearchHandler.SearchTermInEmails)
 }
