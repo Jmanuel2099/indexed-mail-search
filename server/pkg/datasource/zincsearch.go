@@ -46,12 +46,34 @@ func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contracts.CreateE
 	succesResponse := &contracts.CreateEmailsResponse{}
 	errorResponse := &contracts.ErrorReponse{}
 	path := "/api/_bulkv2"
-	bodyRequest := CreateEmailsRequest{
+	bodyRequest := contracts.CreateEmailsRequest{
 		Index:   indexName,
 		Records: emails,
 	}
 
 	request, err := makeRequest(zc.sling, http.MethodPost, path, bodyRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := zc.sling.Do(request, succesResponse, errorResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	if response.StatusCode != http.StatusOK {
+		return nil, err
+	}
+
+	return succesResponse, nil
+}
+
+func (zc *ZincsearchClient) IndexedSearch(bodyrequest contracts.IndexedSearchRequest) (*contracts.IndexedSearchResponse, error) {
+	succesResponse := &contracts.IndexedSearchResponse{}
+	errorResponse := &contracts.ErrorReponse{}
+	path := "api/" + indexName + "_search"
+
+	request, err := makeRequest(zc.sling, http.MethodPost, path, bodyrequest)
 	if err != nil {
 		return nil, err
 	}

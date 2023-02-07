@@ -10,10 +10,10 @@ import (
 )
 
 type IndexerHandler struct {
-	indexerEmailService contracts.IIndexerEmailService
+	indexerEmailService contracts.IIndexerEmail
 }
 
-func NewIndexerHandler(ies contracts.IIndexerEmailService) *IndexerHandler {
+func NewIndexerHandler(ies contracts.IIndexerEmail) *IndexerHandler {
 	return &IndexerHandler{
 		indexerEmailService: ies,
 	}
