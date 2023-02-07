@@ -1,16 +1,18 @@
 package contracts
 
+// IEmail is the contract that must implement the data source.
 type IEmail interface {
 	CreateEmails(emails interface{}) (*CreateEmailsResponse, error)
 	IndexedSearch(bodyrequest IndexedSearchRequest) (*IndexedSearchResponse, error)
-	// DeleteEmails() error
 }
 
+// CreateEmailsRequest is the request for the CreateEmails function
 type CreateEmailsRequest struct {
 	Index   string      `json:"index"`
 	Records interface{} `json:"records"`
 }
 
+// IndexedSearchRequest is the request for the IndexedSearch function
 type IndexedSearchRequest struct {
 	SearchType string                    `json:"search_type"`
 	SortFields []string                  `json:"sort_fields"`
@@ -18,21 +20,22 @@ type IndexedSearchRequest struct {
 	MaxResults int                       `json:"max_results"`
 	Query      IndexedSearchRequestQuery `json:"query"`
 	Source     []string                  `json:"_source"`
-	// Source     map[string]interface{}    `json:"_source"`
 }
 
+// IndexedSearchRequestQuery is the query for the IndexedSearch function
 type IndexedSearchRequestQuery struct {
 	Term      string `json:"term"`
 	StartTime string `json:"start_time"`
 	EndTime   string `json:"end_time"`
 }
 
+// CreateEmailsResponse is the response for the CreateEmailsResponse function
 type CreateEmailsResponse struct {
 	Message     string `json:"message"`
 	RecordCount int    `json:"record_count"`
 }
 
-
+// IndexedSearchResponse is the response for the IndexedSearch function
 type IndexedSearchResponse struct {
 	Took     float64 `json:"took"`
 	TimedOut bool    `json:"timed_out"`
@@ -52,6 +55,7 @@ type IndexedSearchResponse struct {
 	} `json:"hits"`
 }
 
+// ErrorReponse is the response of datasource when an error occurs
 type ErrorReponse struct {
 	ErrorMessage string `json:"error"`
 }

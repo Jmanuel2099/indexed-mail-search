@@ -13,16 +13,20 @@ import (
 // const emailFolderPath = "../enron_mail_20110402/maildir/"
 const emailFolderPath = "../index_test/maildir/"
 
+// IndexerEmailService is the struc that will communicate with the datasource
 type IndexerEmailService struct {
 	datasource contracts.IEmail
 }
 
+// NewIndexerService works as the conntrucutor of the IndexerEmailService struc
 func NewIndexerService(ds contracts.IEmail) *IndexerEmailService {
 	return &IndexerEmailService{
 		datasource: ds,
 	}
 }
 
+// GetMailUsers gets the users in the email database and then reads the emails
+// per user with the ProcessMailsByUser method
 func (ies *IndexerEmailService) GetMailUsers() ([]string, error) {
 	var mailUsers []string
 
@@ -39,6 +43,8 @@ func (ies *IndexerEmailService) GetMailUsers() ([]string, error) {
 	return mailUsers, nil
 }
 
+// ProcessMailsByUser reads and processes the mails that a user has to return
+// them as Emails struts
 func (ies *IndexerEmailService) ProcessMailsByUser(user string) ([]domain.Email, error) {
 	var emails []domain.Email
 	path := emailFolderPath + "/" + user
@@ -51,6 +57,7 @@ func (ies *IndexerEmailService) ProcessMailsByUser(user string) ([]domain.Email,
 	return emails, nil
 }
 
+// IndexEmails is the function that indexes the emails in a datasource
 func (ies *IndexerEmailService) IndexEmails(records []domain.Email) error {
 	reponse, err := ies.datasource.CreateEmails(records)
 	if err != nil {
@@ -61,6 +68,8 @@ func (ies *IndexerEmailService) IndexEmails(records []domain.Email) error {
 	return nil
 }
 
+// readEmail it goes through all the files that a user has to process all the mail
+// files that he has
 func readEmails(emails *[]domain.Email) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -78,6 +87,8 @@ func readEmails(emails *[]domain.Email) filepath.WalkFunc {
 
 }
 
+// processEmailFile reads the content of a email containing the information of an
+// email and then processes it
 func processEmailFile(emailFilepath string) (*domain.Email, error) {
 	emailContent, err := os.ReadFile(emailFilepath)
 	if err != nil {
@@ -86,6 +97,7 @@ func processEmailFile(emailFilepath string) (*domain.Email, error) {
 	return mapStringToEmail(string(emailContent)), nil
 }
 
+// mapStringToEmail maps the content of an email that is in a string to an Email struc
 func mapStringToEmail(emailString string) *domain.Email {
 	detailsAndContent := strings.SplitN(string(emailString), "\r\n\r\n", 2)
 	details := strings.Split(detailsAndContent[0], "\r\n")

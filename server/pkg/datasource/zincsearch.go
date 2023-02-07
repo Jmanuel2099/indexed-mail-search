@@ -19,11 +19,13 @@ const (
 	indexName             = "enron_emails"
 )
 
+// ZincsearchClient is the client that will communicate with the zincsearch api
 type ZincsearchClient struct {
 	client *http.Client
 	sling  *sling.Sling
 }
 
+// NewZincsearchClient works as the conntrucutor of the ZincsearchClient struc
 func NewZincsearchClient(client *http.Client) *ZincsearchClient {
 	newSling := sling.New().Client(client).Base(defaultZincSearchHost)
 	setBasicAuthentication(newSling)
@@ -33,6 +35,8 @@ func NewZincsearchClient(client *http.Client) *ZincsearchClient {
 	}
 }
 
+// setBasicAuthentication uses two environment variables that must already be set
+// to perform an authentication with the zincsearch API
 func setBasicAuthentication(newSling *sling.Sling) {
 	username := os.Getenv("ZINC_FIRST_ADMIN_USER")
 	password := os.Getenv("ZINC_FIRST_ADMIN_PASSWORD")
@@ -43,6 +47,7 @@ func setBasicAuthentication(newSling *sling.Sling) {
 	newSling.SetBasicAuth(username, password)
 }
 
+// CreateEmails uses the zincsearch API to create indexed documents
 func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contracts.CreateEmailsResponse, error) {
 	succesResponse := &contracts.CreateEmailsResponse{}
 	errorResponse := &contracts.ErrorReponse{}
@@ -69,6 +74,7 @@ func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contracts.CreateE
 	return succesResponse, nil
 }
 
+// IndexedSearch uses the zincsearch API to perform an indexed search for a term within the content of documents
 func (zc *ZincsearchClient) IndexedSearch(bodyrequest contracts.IndexedSearchRequest) (*contracts.IndexedSearchResponse, error) {
 	succesResponse := &contracts.IndexedSearchResponse{}
 	errorResponse := &contracts.ErrorReponse{}
@@ -76,7 +82,6 @@ func (zc *ZincsearchClient) IndexedSearch(bodyrequest contracts.IndexedSearchReq
 
 	request, err := makeRequest(zc.sling, http.MethodPost, url, bodyrequest)
 	if err != nil {
-		// fmt.Println("Make request error: " + err.Error())
 		return nil, err
 	}
 	response, err := zc.sling.Do(request, succesResponse, errorResponse)
@@ -92,6 +97,7 @@ func (zc *ZincsearchClient) IndexedSearch(bodyrequest contracts.IndexedSearchReq
 	return succesResponse, nil
 }
 
+// makeRequest makes a request to the provided url with the provided POST method and body
 func makeRequest(sling *sling.Sling, method string, path string, body interface{}) (*http.Request, error) {
 	bodyRequest := makeBodyRequest(body)
 

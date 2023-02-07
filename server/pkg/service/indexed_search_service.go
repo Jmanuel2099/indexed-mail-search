@@ -12,16 +12,20 @@ const (
 	defaultMaxResults = 7
 )
 
+// IndexedSearchService is the struc that will communicate with the datasource
 type IndexedSearchService struct {
 	datasource contracts.IEmail
 }
 
+// NewIndexedSearchService works as the conntrucutor of the IndexedSearchService struc
 func NewIndexedSearchService(ds contracts.IEmail) *IndexedSearchService {
 	return &IndexedSearchService{
 		datasource: ds,
 	}
 }
 
+// SearchInIndexedEmails communicates with the zincsearch API to perform a search
+// for a term in the indexed mails.
 func (iss *IndexedSearchService) SearchInIndexedEmails(term string) ([]domain.Email, error) {
 	now := time.Now()
 	startTime := now.AddDate(0, 0, -7).Format("2006-01-02T15:04:05Z")
@@ -48,6 +52,7 @@ func (iss *IndexedSearchService) SearchInIndexedEmails(term string) ([]domain.Em
 	return mapResponseToEmails(response), nil
 }
 
+// mapResponseToEmails maps the IndexedSearchResponseResponse response structure to Emails
 func mapResponseToEmails(response *contracts.IndexedSearchResponse) []domain.Email {
 	var emails []domain.Email
 

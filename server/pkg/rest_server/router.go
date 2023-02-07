@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/render"
 )
 
+// configureRouter setups chi router mildelware for http communication
 func (rs *RestServer) configureRouter() {
 	rs.Router = chi.NewRouter()
 	rs.Router.Use(middleware.RequestID)
@@ -18,6 +19,7 @@ func (rs *RestServer) configureRouter() {
 	rs.configureRoutes()
 }
 
+// configureRoutes sets up the routes for the app.
 func (rs *RestServer) configureRoutes() {
 	rs.Router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		render.JSON(w, r, map[string]string{"message": "Welcome to the Go Challenge!"})

@@ -1,5 +1,6 @@
 package domain
 
+// Email is the struct for the eron_email
 type Email struct {
 	MessageID string `json:"message_id"`
 	Date      string `json:"date"`

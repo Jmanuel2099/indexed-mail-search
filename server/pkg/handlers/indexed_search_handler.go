@@ -10,20 +10,24 @@ import (
 	"github.com/go-chi/render"
 )
 
+// IndexedSearchHAandler is the handler for the IndexedSearch requests
 type IndexedSearchHAandler struct {
 	indexedSearchService contracts.IIndexedSearch
 }
 
+// NewIndexedSearchHAandler works as the conntrucutor of the IndexedSearchHAandler struc
 func NewIndexedSearchHAandler(iss contracts.IIndexedSearch) *IndexedSearchHAandler {
 	return &IndexedSearchHAandler{
 		indexedSearchService: iss,
 	}
 }
 
+// SearchTermInEmailsResponse is the response for the SearchTermInEmails method
 type SearchTermInEmailsResponse struct {
 	Emails []domain.Email `json:"emails"`
 }
 
+// SearchTermInEmails is the method that searches for a term in the emails.
 func (ish *IndexedSearchHAandler) SearchTermInEmails(w http.ResponseWriter, r *http.Request) {
 	term := chi.URLParam(r, "term")
 	if len(term) > 150 || len(term) < 1 {
