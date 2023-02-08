@@ -6,7 +6,6 @@ import (
 	"indexed-mail-search/server/pkg/handlers/contracts"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )
 
@@ -29,7 +28,9 @@ type SearchTermInEmailsResponse struct {
 
 // SearchTermInEmails is the method that searches for a term in the emails.
 func (ish *IndexedSearchHAandler) SearchTermInEmails(w http.ResponseWriter, r *http.Request) {
-	term := chi.URLParam(r, "term")
+	query := r.URL.Query()
+	term := query.Get("term")
+
 	if len(term) > 150 || len(term) < 1 {
 		errMessage := "term invalid. Length must be between 1 and 150"
 		customerror.NewCustomError(http.StatusBadRequest, errMessage).ErrorResponseHandling(w, r)
