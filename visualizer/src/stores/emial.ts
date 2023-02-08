@@ -47,6 +47,6 @@ export const useEmailStore = defineStore('emails', {
 
                 this.setEmails([]);
             }
-        }
+        },
     }
 });

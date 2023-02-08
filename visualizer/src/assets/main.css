@@ -8,6 +8,11 @@
   font-weight: normal;
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+}
+
 a,
 .green {
   text-decoration: none;

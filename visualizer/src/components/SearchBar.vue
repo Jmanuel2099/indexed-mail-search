@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useEmails } from '@/composables/useEmails';
+import SearchResults from './SearchResults.vue';
 
 const debouncedValue = ref('')
 const debounceTimeout = ref()
@@ -23,8 +24,9 @@ const searchTemr = computed({
 </script>
 
 <template>
-    <div>
+    <div >
         <input v-model="searchTemr" type="text" placeholder="Search a word..." />
+        <SearchResults />
     </div>
 </template>
 

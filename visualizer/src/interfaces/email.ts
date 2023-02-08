@@ -5,5 +5,4 @@ export interface Email {
     from: string;
     to: string;
     content: string;
-    filepath: string;
 }
