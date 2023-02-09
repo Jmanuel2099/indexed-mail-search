@@ -1,59 +1,51 @@
 <script setup lang="ts">
 import { useEmails } from '@/composables/useEmails';
 import type { Email } from '@/interfaces/email';
-import { computed } from 'vue';
+import EmptyTray from './messages/EmptyTray.vue';
+import Loading from './messages/Loading.vue'
 
 const { isLoadingEmails, emails, onSelectEmail } = useEmails();
 
 const onEmailClick = (email: Email) => {
     onSelectEmail(email)
 }
-
 </script>
 
 <template>
 
-    <div v-if="isLoadingEmails" class="loading-container">
-
-        <h5>Looking for the term...</h5>
-        <p>Wait pleas</p>
+    <div v-if="!isLoadingEmails && emails.length === 0">
+        <EmptyTray />
     </div>
 
+    <div v-else-if="isLoadingEmails && emails.length === 0">
+        <Loading />
+    </div>
     <ul v-else-if="emails.length > 0">
         <li v-for="email in emails" :key="email.message_id" @click="onEmailClick(email)">
             <h4>{{ email.subject }}</h4>
-            <span>👤 {{ email.from.split('@')[0] }} - 📅 {{ new Date(email.date).toLocaleDateString() }}</span> 
+            <span>👤 {{ email.from.split('@')[0] }} - 📅 {{ new Date(email.date).toLocaleDateString() }}</span>
         </li>
     </ul>
 </template>
 
 <style scoped>
-.loading-container {
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-}
-
 h5 {
     font-size: 20px;
-    color: #81bcf7;
+    color: #0078bd;
     font-family: "Open Sans", sans-serif;
     margin-top: 50px;
 }
 
 li {
-    background-color: #2C3E50;
+    background-color: #bebebe;
     margin-bottom: 10px;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
 h4 {
-    color: #c8faf7;
+    color: #0078bd;
     font-size: 22px;
     margin-bottom: 10px;
     font-family: "Open Sans", sans-serif;
@@ -61,7 +53,7 @@ h4 {
 
 span {
     font-size: 16px;
-    color: #666666;
+    color: #2c2c2c;
     margin-bottom: 10px;
     font-family: "Open Sans", sans-serif;
 }

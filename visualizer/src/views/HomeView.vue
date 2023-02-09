@@ -24,12 +24,13 @@ import SearchBar from '@/components/SearchBar.vue';
 }
 
 .col-1 {
-    width: 50%;
+    width: 35%;
     background-color: #F1F1F1;
+    overflow: auto;
   }
 
   .col-2 {
-    width: 50%;
-    background-color: #E0E0E0;
+    width: 65%;
+    /* background-color: #E0E0E0; */
   }
 </style>

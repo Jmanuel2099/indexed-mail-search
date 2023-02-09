@@ -32,8 +32,8 @@ const searchTemr = computed({
 
 <style scoped>
 .search_container {
-    background-color: #212122;
-    width: 45%;
+    /* background-color: #212122; */
+    width: 33%;
     height: 95%;
     padding: 10px;
     border-radius: 8px;
@@ -45,15 +45,15 @@ const searchTemr = computed({
 }
 
 input[type="text"] {
-    /* box-shadow: 10px 10px 10px rgba(59, 155, 245, 0.2); */
-    width: 98%;
+    box-shadow: 10px 10px 10px rgba(142, 142, 143, 0.5);
+    width: 100%;
     height: 45px;
     font-size: 15px;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     border: none;
-    background-color: #2C3E50;
-    color: #ECF0F1;
+    background-color: #bebebe;
+    color: #5e5e5e;
     /* float: left; */
     margin-bottom: 20px;
 }
