@@ -8,14 +8,17 @@ import { emailAPI } from '@/service';
 interface EmailsState {
     isLoadingEmails: boolean;
     emails: Email[];
+    selectedEmail?: Email;
 }
 
 export const useEmailStore = defineStore('emails', {
     state: (): EmailsState => ({
         isLoadingEmails: false,
         emails: [],
+        selectedEmail: undefined,
     }),
     getters: {
+        selectedEmailReady: (state): boolean => !!state.selectedEmail
 
     },
     actions: {
@@ -47,6 +50,9 @@ export const useEmailStore = defineStore('emails', {
 
                 this.setEmails([]);
             }
+        },
+        setSelectedEmail(email: Email) {
+            this.selectedEmail = email
         },
     }
 });
