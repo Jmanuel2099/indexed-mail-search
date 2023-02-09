@@ -2,9 +2,9 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"indexed-mail-search/server/pkg/domain"
 	"indexed-mail-search/server/pkg/handlers/contracts"
-	"time"
 )
 
 const (
@@ -27,9 +27,9 @@ func NewIndexedSearchService(ds contracts.IEmail) *IndexedSearchService {
 // SearchInIndexedEmails communicates with the zincsearch API to perform a search
 // for a term in the indexed mails.
 func (iss *IndexedSearchService) SearchInIndexedEmails(term string) ([]domain.Email, error) {
-	now := time.Now()
-	startTime := now.AddDate(0, 0, -7).Format("2006-01-02T15:04:05Z")
-	endTime := now.Format("2006-01-02T15:04:05Z")
+	// now := time.Now()
+	// startTime := now.AddDate(0, 0, -7).Format("2006-01-02T15:04:05Z")
+	// endTime := now.Format("2006-01-02T15:04:05Z")
 
 	body := contracts.IndexedSearchRequest{
 		SearchType: defaultSearchType,
@@ -37,17 +37,17 @@ func (iss *IndexedSearchService) SearchInIndexedEmails(term string) ([]domain.Em
 		From:       0,
 		MaxResults: defaultMaxResults,
 		Query: contracts.IndexedSearchRequestQuery{
-			Term:      term,
-			StartTime: startTime,
-			EndTime:   endTime,
+			Term: term,
+			// StartTime: startTime,
+			// EndTime:   endTime,
 		},
-		Source: []string{},
+		// Source: []string{},
 	}
 	response, err := iss.datasource.IndexedSearch(body)
 	if err != nil {
-
 		return nil, err
 	}
+	fmt.Println(response.MaxScore)
 
 	return mapResponseToEmails(response), nil
 }
