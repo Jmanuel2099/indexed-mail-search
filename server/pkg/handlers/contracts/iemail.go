@@ -19,14 +19,14 @@ type IndexedSearchRequest struct {
 	From       int                       `json:"from"`
 	MaxResults int                       `json:"max_results"`
 	Query      IndexedSearchRequestQuery `json:"query"`
-	Source     []string                  `json:"_source"`
+	// Source     []string                  `json:"_source"`
 }
 
 // IndexedSearchRequestQuery is the query for the IndexedSearch function
 type IndexedSearchRequestQuery struct {
 	Term      string `json:"term"`
-	StartTime string `json:"start_time"`
-	EndTime   string `json:"end_time"`
+	// StartTime string `json:"start_time"`
+	// EndTime   string `json:"end_time"`
 }
 
 // CreateEmailsResponse is the response for the CreateEmailsResponse function
