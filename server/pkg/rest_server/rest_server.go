@@ -51,8 +51,8 @@ func (rs *RestServer) configureHandlers() {
 }
 
 func (rs *RestServer) RunServer() {
-	fmt.Println("Application is running")
-	
+	fmt.Println("Application is running on host http://localhost:8000/")
+
 	err := http.ListenAndServe(serverPort, rs.Router)
 	if err != nil {
 		panic(err)

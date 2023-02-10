@@ -3,7 +3,6 @@ package datasource
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"indexed-mail-search/server/pkg/handlers/contracts"
 	"io"
 	"net/http"
@@ -86,14 +85,12 @@ func (zc *ZincsearchClient) IndexedSearch(bodyrequest contracts.IndexedSearchReq
 	}
 	response, err := zc.sling.Do(request, succesResponse, errorResponse)
 	if err != nil {
-		fmt.Println("Do error: " + err.Error())
 		return nil, err
 	}
 
 	if response.StatusCode != http.StatusOK {
 		return nil, err
 	}
-	fmt.Println(succesResponse.Hits.Total.Value)
 	return succesResponse, nil
 }
 

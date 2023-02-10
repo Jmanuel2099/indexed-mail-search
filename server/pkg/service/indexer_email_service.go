@@ -10,8 +10,9 @@ import (
 	"strings"
 )
 
-// const emailFolderPath = "../enron_mail_20110402/maildir/"
-const emailFolderPath = "../index_test/maildir/"
+const emailFolderPath = "../enron_mail_20110402/maildir/"
+
+// const emailFolderPath = "../index_test/maildir/"
 
 // IndexerEmailService is the struc that will communicate with the datasource
 type IndexerEmailService struct {
