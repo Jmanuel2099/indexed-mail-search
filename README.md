@@ -10,6 +10,7 @@ indexed-mail-search is a full stack application that searches for e-mails which 
   - Search Engine: [Zinc](https://docs.zinc.dev/)
 - Frontend:
   - Framework: [Vue](https://vuejs.org/)
+  - Store: [Pinia](https://pinia.vuejs.org/)
   - Programming language: [TypeScipt](https://www.typescriptlang.org/)
 
 ### 🗒Note
