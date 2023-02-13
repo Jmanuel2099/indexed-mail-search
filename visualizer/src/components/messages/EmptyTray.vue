@@ -1,6 +1,6 @@
 <template>
     <section>
-        <img alt="App_logo" class="logo" src="@/assets/bandeja-de-entrada.png" width="125" height="125" />
+        <img alt="App_logo" class="logo" src="@/assets/inbox.png" width="125" height="125" />
         <h4>The mailbox is empty, you should search for a term.</h4>
     </section>
     

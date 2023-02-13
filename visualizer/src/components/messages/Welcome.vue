@@ -1,6 +1,6 @@
 <template>
     <section class="welcome_section">
-        <img alt="App_logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+        <img alt="App_logo" class="logo" src="@/assets/faster.png" width="125" height="125" />
 
         <div class="wrapper">
             <div class="greetings">
