@@ -2,7 +2,7 @@
 
 Server application takes help of dependency inversion to make the application modular and easy to maintain over time.
 
-![server infrastructure_](../images/server_infrastructure_.png)
+![server infrastructure_](../images/server_infrastructure.png)
 
 ## Set in motion
 - Download and install the search engine [ZincSearch](https://docs.zinc.dev/installation/)
