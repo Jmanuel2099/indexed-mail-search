@@ -27,7 +27,7 @@ type RestServer struct {
 func NewRestServer() *RestServer {
 	server := &RestServer{}
 	server.configureHttpClient()
-	server.configureHandlers()
+	server.configureDependencies()
 	server.configureRouter()
 
 	return server
@@ -39,7 +39,7 @@ func (rs *RestServer) configureHttpClient() {
 }
 
 // configureHandlers setups dependency injection
-func (rs *RestServer) configureHandlers() {
+func (rs *RestServer) configureDependencies() {
 	datasourceZincSearch := datasource.NewZincsearchClient(rs.httpClient)
 
 	indexEmailService := service.NewIndexerService(datasourceZincSearch)
