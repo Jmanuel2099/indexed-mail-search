@@ -3,8 +3,9 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+
 	"indexed-mail-search/server/pkg/domain"
-	"indexed-mail-search/server/pkg/handlers/contracts"
+	contractsservice "indexed-mail-search/server/pkg/service/contracts_service"
 )
 
 const (
@@ -14,11 +15,11 @@ const (
 
 // IndexedSearchService is the struc that will communicate with the datasource
 type IndexedSearchService struct {
-	datasource contracts.IEmail
+	datasource contractsservice.IEmail
 }
 
 // NewIndexedSearchService works as the conntrucutor of the IndexedSearchService struc
-func NewIndexedSearchService(ds contracts.IEmail) *IndexedSearchService {
+func NewIndexedSearchService(ds contractsservice.IEmail) *IndexedSearchService {
 	return &IndexedSearchService{
 		datasource: ds,
 	}
@@ -31,12 +32,12 @@ func (iss *IndexedSearchService) SearchInIndexedEmails(term string) ([]domain.Em
 	// startTime := now.AddDate(0, 0, -7).Format("2006-01-02T15:04:05Z")
 	// endTime := now.Format("2006-01-02T15:04:05Z")
 
-	body := contracts.IndexedSearchRequest{
+	body := contractsservice.IndexedSearchRequest{
 		SearchType: defaultSearchType,
 		SortFields: []string{"-@timestamp"},
 		From:       0,
 		MaxResults: defaultMaxResults,
-		Query: contracts.IndexedSearchRequestQuery{
+		Query: contractsservice.IndexedSearchRequestQuery{
 			Term: term,
 			// StartTime: startTime,
 			// EndTime:   endTime,
@@ -53,7 +54,7 @@ func (iss *IndexedSearchService) SearchInIndexedEmails(term string) ([]domain.Em
 }
 
 // mapResponseToEmails maps the IndexedSearchResponseResponse response structure to Emails
-func mapResponseToEmails(response *contracts.IndexedSearchResponse) []domain.Email {
+func mapResponseToEmails(response *contractsservice.IndexedSearchResponse) []domain.Email {
 	var emails []domain.Email
 
 	for _, hit := range response.Hits.Hits {

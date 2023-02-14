@@ -1,4 +1,4 @@
-package contracts
+package contractsservice
 
 // IEmail is the contract that must implement the data source.
 type IEmail interface {
@@ -24,7 +24,7 @@ type IndexedSearchRequest struct {
 
 // IndexedSearchRequestQuery is the query for the IndexedSearch function
 type IndexedSearchRequestQuery struct {
-	Term      string `json:"term"`
+	Term string `json:"term"`
 	// StartTime string `json:"start_time"`
 	// EndTime   string `json:"end_time"`
 }

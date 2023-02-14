@@ -3,10 +3,11 @@ package datasource
 import (
 	"bytes"
 	"encoding/json"
-	"indexed-mail-search/server/pkg/handlers/contracts"
 	"io"
 	"net/http"
 	"os"
+
+	contractsservice "indexed-mail-search/server/pkg/service/contracts_service"
 
 	"github.com/dghubble/sling"
 )
@@ -47,11 +48,11 @@ func setBasicAuthentication(newSling *sling.Sling) {
 }
 
 // CreateEmails uses the zincsearch API to create indexed documents
-func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contracts.CreateEmailsResponse, error) {
-	succesResponse := &contracts.CreateEmailsResponse{}
-	errorResponse := &contracts.ErrorReponse{}
+func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contractsservice.CreateEmailsResponse, error) {
+	succesResponse := &contractsservice.CreateEmailsResponse{}
+	errorResponse := &contractsservice.ErrorReponse{}
 	url := "/api/_bulkv2"
-	bodyRequest := contracts.CreateEmailsRequest{
+	bodyRequest := contractsservice.CreateEmailsRequest{
 		Index:   indexName,
 		Records: emails,
 	}
@@ -74,9 +75,9 @@ func (zc *ZincsearchClient) CreateEmails(emails interface{}) (*contracts.CreateE
 }
 
 // IndexedSearch uses the zincsearch API to perform an indexed search for a term within the content of documents
-func (zc *ZincsearchClient) IndexedSearch(bodyrequest contracts.IndexedSearchRequest) (*contracts.IndexedSearchResponse, error) {
-	succesResponse := &contracts.IndexedSearchResponse{}
-	errorResponse := &contracts.ErrorReponse{}
+func (zc *ZincsearchClient) IndexedSearch(bodyrequest contractsservice.IndexedSearchRequest) (*contractsservice.IndexedSearchResponse, error) {
+	succesResponse := &contractsservice.IndexedSearchResponse{}
+	errorResponse := &contractsservice.ErrorReponse{}
 	url := "/api/" + indexName + "/_search"
 
 	request, err := makeRequest(zc.sling, http.MethodPost, url, bodyrequest)

@@ -2,12 +2,13 @@ package service
 
 import (
 	"fmt"
-	"indexed-mail-search/server/pkg/domain"
-	"indexed-mail-search/server/pkg/handlers/contracts"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"indexed-mail-search/server/pkg/domain"
+	contractsservice "indexed-mail-search/server/pkg/service/contracts_service"
 )
 
 const emailFolderPath = "../enron_mail_20110402/maildir/"
@@ -16,11 +17,11 @@ const emailFolderPath = "../enron_mail_20110402/maildir/"
 
 // IndexerEmailService is the struc that will communicate with the datasource
 type IndexerEmailService struct {
-	datasource contracts.IEmail
+	datasource contractsservice.IEmail
 }
 
 // NewIndexerService works as the conntrucutor of the IndexerEmailService struc
-func NewIndexerService(ds contracts.IEmail) *IndexerEmailService {
+func NewIndexerService(ds contractsservice.IEmail) *IndexerEmailService {
 	return &IndexerEmailService{
 		datasource: ds,
 	}
