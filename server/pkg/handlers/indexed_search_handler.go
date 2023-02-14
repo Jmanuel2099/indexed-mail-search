@@ -1,10 +1,11 @@
 package handlers
 
 import (
+	"net/http"
+	
 	customerror "indexed-mail-search/server/pkg/custom_error"
 	"indexed-mail-search/server/pkg/domain"
 	"indexed-mail-search/server/pkg/handlers/contracts"
-	"net/http"
 
 	"github.com/go-chi/render"
 )

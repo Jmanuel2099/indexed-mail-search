@@ -2,10 +2,11 @@ package restserver
 
 import (
 	"fmt"
+	"net/http"
+
 	"indexed-mail-search/server/pkg/datasource"
 	"indexed-mail-search/server/pkg/handlers"
 	"indexed-mail-search/server/pkg/service"
-	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
