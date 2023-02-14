@@ -1,4 +1,4 @@
-# 📨 indexed-mail-search
+# indexed-mail-search
 indexed-mail-search is a full stack application that searches for e-mails which are indexed in the ZincSearch search engine implemented in Go and Vue Ts.
 
 [![Alt text](https://img.youtube.com/vi/Gg_MFnc_RgA/0.jpg)](https://www.youtube.com/watch?v=Gg_MFnc_RgA)
