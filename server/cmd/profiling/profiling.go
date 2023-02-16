@@ -1,5 +1,15 @@
 package main
 
+// Documentation: https://go.dev/doc/diagnostics#profiling
+
+// To generate a CPU and memory profile:
+// execute 'go run main.go -cpuprofile=cpu.prof -memprofile=mem.prof'
+
+// To show CPU and memory profile:
+// install the Graphviz visualization tool. https://graphviz.org/download/
+// execute 'go tool pprof -http=:8080 cpu.prof' to show CPU profile
+// execute 'go tool pprof -http=:8080 mem.prof' to show memory profile
+
 import (
 	"flag"
 	"log"
