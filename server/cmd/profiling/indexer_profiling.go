@@ -1,4 +1,4 @@
-package main
+package indexerprofiling
 
 // Documentation: https://go.dev/doc/diagnostics#profiling
 
@@ -12,6 +12,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
@@ -19,51 +20,34 @@ import (
 	"runtime"
 	"runtime/pprof"
 	"sync"
+	"time"
 
 	"indexed-mail-search/server/pkg/datasource"
 	"indexed-mail-search/server/pkg/service"
 )
 
-func IndexEmails() {
-	httpClient := &http.Client{}
-	datasourceZincSearch := datasource.NewZincsearchClient(httpClient)
-	indexEmailService := service.NewIndexerService(datasourceZincSearch)
-
-	emailUsers, err := indexEmailService.GetMailUsers()
-
-	if err != nil {
-		return
-	}
-
-	var wg sync.WaitGroup
-	for _, emailUser := range emailUsers {
-		wg.Add(1)
-		go indexEmailByUser(emailUser, &wg)
-	}
-	wg.Wait()
+type IndexerProfiling struct {
+	indexedService *service.IndexerEmailService
 }
 
-func indexEmailByUser(emailUser string, wg *sync.WaitGroup) {
+func NewIndexerProfiling() *IndexerProfiling {
+	indexerProfiling := &IndexerProfiling{}
+	indexerProfiling.configureServiceDependency()
+
+	return indexerProfiling
+}
+
+func (ip *IndexerProfiling) configureServiceDependency() {
 	httpClient := &http.Client{}
 	datasourceZincSearch := datasource.NewZincsearchClient(httpClient)
-	indexEmailService := service.NewIndexerService(datasourceZincSearch)
 
-	defer wg.Done()
-	emails, err := indexEmailService.ProcessMailsByUser(emailUser)
-	if err != nil {
-		return
-	}
-	err = indexEmailService.IndexEmails(emails)
-	if err != nil {
-		return
-	}
+	ip.indexedService = service.NewIndexerService(datasourceZincSearch)
 }
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
 var memprofile = flag.String("memprofile", "", "write memory profile to `file`")
 
-func main() {
-
+func (ip *IndexerProfiling) StartProfiling() {
 	flag.Parse()
 	if *cpuprofile != "" {
 		f, err := os.Create(*cpuprofile)
@@ -76,7 +60,12 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
-	IndexEmails()
+
+	start := time.Now()
+	ip.indexEmails()
+	end := time.Now()
+	fmt.Println("execution time" + end.Sub(start).String())
+
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
 		if err != nil {
@@ -87,5 +76,34 @@ func main() {
 		if err := pprof.WriteHeapProfile(f); err != nil {
 			log.Fatal("could not write memory profile: ", err)
 		}
+	}
+}
+
+func (ip *IndexerProfiling) indexEmails() {
+	emailUsers, err := ip.indexedService.GetMailUsers()
+	if err != nil {
+		fmt.Println("error occurred getting users in the database. " + err.Error())
+		return
+	}
+
+	var wg sync.WaitGroup
+	for _, emailUser := range emailUsers {
+		wg.Add(1)
+		go ip.indexEmailByUser(emailUser, &wg)
+	}
+	wg.Wait()
+}
+
+func (ip *IndexerProfiling) indexEmailByUser(emailUser string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	emails, err := ip.indexedService.ProcessMailsByUser(emailUser)
+	if err != nil {
+		fmt.Println("error occurred when trying to  emails from user" + emailUser + ". " + err.Error())
+		return
+	}
+	err = ip.indexedService.IndexEmails(emails)
+	if err != nil {
+		fmt.Println("error occurred when trying to index mails in zincsearch. " + err.Error())
+		return
 	}
 }
